@@ -7,10 +7,17 @@ kaboom({
 });
 
 // load sprite
-loadRoot("http://localhost:8080/");
-loadSprite("birdy", "assets/images/birdy.png");
-loadSprite("bg", "assets/images/bg.png");
-loadSprite("pipe", "assets/images/pipe.png");
+loadRoot("http://localhost:8080/assets/");
+loadSprite("birdy", "images/birdy.png");
+loadSprite("bg", "images/bg.png");
+loadSprite("pipe", "images/pipe.png");
+
+// load sound
+loadSound("die", "sounds/sfx_die.wav");
+loadSound("hit", "sounds/sfx_hit.wav");
+loadSound("point", "sounds/sfx_point.wav");
+loadSound("swoosh", "sounds/sfx_swooshing.wav");
+loadSound("wing", "sounds/sfx_wing.wav");
 
 // define scene
 scene("main", () => {
@@ -39,21 +46,25 @@ scene("main", () => {
   // press space to jump
 	keyPress("space", () => {
 		birdy.jump(JUMP_FORCE);
+    play("wing")
 	});
 
   // if bird fall, restart the game
   birdy.action(() => {
 		if (birdy.pos.y >= height()) {
       go("gameover", score.value);
+      play("hit")
 		}
     if (birdy.pos.y <= 0) {
       go("gameover", score.value);
+      play("hit")
 		}
 	});
 
   // if bird collides with pipe, restart the game
   birdy.collides("pipe", () => {
     go("gameover", score.value);
+    play("hit")
 	});
 
   const PIPE_OPEN = 120;
@@ -93,6 +104,7 @@ scene("main", () => {
 			score.value++;
 			score.text = score.value;
 			pipe.passed = true;
+      play("point")
 		}
 
     // destroy pipe that out of frame

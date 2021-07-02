@@ -1,6 +1,6 @@
 {
   "name": "flappy-bird",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A bird that cant really flap its wing",
   "main": "src/index.js",
   "scripts": {
