@@ -49,6 +49,9 @@ scene("main", () => {
     play("wing")
 	});
 
+  const FALL_ANGLE = 50;
+  const JUMP_ANGLE = -50;
+
   // if bird fall, restart the game
   birdy.action(() => {
 		if (birdy.pos.y >= height()) {
@@ -59,6 +62,14 @@ scene("main", () => {
       go("gameover", score.value);
       play("hit")
 		}
+
+    // check if bird is falling
+    if(birdy.falling()) {
+      birdy.angle = FALL_ANGLE
+    }
+    else {
+      birdy.angle = JUMP_ANGLE
+    }
 	});
 
   // if bird collides with pipe, restart the game
