@@ -72,7 +72,7 @@ scene("menu", () => {
 
   // add version text
   add([
-    text(`v${p.version}`),
+    text(`v${p.version} by ${p.author}`),
     pos(width() / 2, height() - 15),
     origin("center"),
   ])
