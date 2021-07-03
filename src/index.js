@@ -1,4 +1,5 @@
 import kaboom from 'kaboom';
+import * as c from './helpers/constants'
 
 kaboom({
 	global: true,
@@ -8,7 +9,7 @@ kaboom({
 });
 
 // load sprite
-loadRoot("http://localhost:8080/assets/");
+loadRoot("https://raw.githubusercontent.com/xshrxf11/flappy-bird/master/src/assets/");
 loadSprite("bird-blue", "images/bird-blue.png");
 loadSprite("bird-yellow", "images/bird-yellow.png");
 loadSprite("bird-red", "images/bird-red.png");
@@ -16,14 +17,11 @@ loadSprite("bg", "images/bg.png");
 loadSprite("pipe", "images/pipe.png");
 
 // load sound
-loadSound("die", "sounds/sfx_die.wav");
 loadSound("hit", "sounds/sfx_hit.wav");
 loadSound("point", "sounds/sfx_point.wav");
-loadSound("swoosh", "sounds/sfx_swooshing.wav");
 loadSound("wing", "sounds/sfx_wing.wav");
 
 scene("menu", () => {
-  const NUM_OF_BIRDS = 3
   const birds = []
 
   // add background sprite
@@ -35,50 +33,48 @@ scene("menu", () => {
 
   add([
     sprite("bird-blue"),
-    pos((width() / 2) - 200, 50),
+    pos((width() / 2) - 200, 20),
     origin("topleft"),
   ]);
 
   add([
     text("Flappy Bird", 30),
-    pos((width() / 2) - 150, 50),
+    pos((width() / 2) - 150, 20),
     origin("topleft"),
   ]);
 
   add([
     text("Player Mode", 15),
-    pos((width() / 2) - 80, 100),
+    pos((width() / 2) - 80, 60),
     color(0, 0, 0),
     origin("topleft"),
   ]);
 
-  for (let i = 0; i < NUM_OF_BIRDS; i++) {
+  for (let i = 0; i < c.NUM_OF_BIRDS; i++) {
     birds.push(add([
       text(`${(i+1)} Players`, 12),
-      pos(width() / 2, (height() / 3) + (i * 40)),
+      pos(width() / 2, 100 + (i * 30)),
       origin("center"),
     ]))
 
     birds[i].clicks(() => {
       go("game", (i+1))
     })
+
+    add([
+      text(`P${(i + 1)} press <${c.JUMP_KEYS[i]}> to jump`),
+      pos(width() / 2, (height() - 60 ) + (i * 15)),
+      origin("center"),
+    ])
   }
+  
 })
 
 // define scene
 scene("game", (numberOfBirds) => {
   
-  const NUM_OF_BIRDS = numberOfBirds
-  const JUMP_FORCE = 320;
-  const FALL_ANGLE = 50;
-  const JUMP_ANGLE = -50;
-  const PIPE_OPEN = 120;
-  const PIPE_SPEED = 90;
-
   const birds = []
   const scores = []
-  const colors = ['red', 'yellow', 'blue'] // changes items length if change number of players
-  const jumpKeys = ['space', 'enter', 'up'] // changes items length if change number of players
 
   layers([
 		"game",
@@ -92,11 +88,11 @@ scene("game", (numberOfBirds) => {
 		origin("topleft")
 	]);
 
-  for (let i = 0; i < NUM_OF_BIRDS; i++) {
+  for (let i = 0; i < numberOfBirds; i++) {
 
     // add birds
     birds.push(add([
-      sprite(`bird-${colors[i]}`), // load sprite
+      sprite(`bird-${c.COLORS[i]}`), // load sprite
       pos(100, 100 + (i * 20)), // position sprite
       body(), // gravity sprite
       scale(0.5),
@@ -116,8 +112,8 @@ scene("game", (numberOfBirds) => {
     ]));
 
     // add jump key
-    keyPress(jumpKeys[i], () => {
-      birds[i].jump(JUMP_FORCE);
+    keyPress(c.JUMP_KEYS[i], () => {
+      birds[i].jump(c.JUMP_FORCE);
 
       if(birds[i].exists()) {
         play("wing")
@@ -141,10 +137,10 @@ scene("game", (numberOfBirds) => {
 
       // check if bird is falling
       if(birds[i].falling()) {
-        birds[i].angle = FALL_ANGLE
+        birds[i].angle = c.FALL_ANGLE
       }
       else {
-        birds[i].angle = JUMP_ANGLE
+        birds[i].angle = c.JUMP_ANGLE
       }
 
       // console.log(`birds ${i} position`, birds)
@@ -173,7 +169,7 @@ scene("game", (numberOfBirds) => {
   loop(1.5, () => {
 
     // random height
-    const pipePos = rand(0, height() - PIPE_OPEN);
+    const pipePos = rand(0, height() - c.PIPE_OPEN);
 
     // add top pipe
 		add([
@@ -186,7 +182,7 @@ scene("game", (numberOfBirds) => {
     // add bottom pipe
 		add([
 			sprite("pipe"),
-			pos(width(), pipePos + PIPE_OPEN),
+			pos(width(), pipePos + c.PIPE_OPEN),
 			scale(1, -1),
 			origin("bot"),
 			"pipe",
@@ -197,11 +193,11 @@ scene("game", (numberOfBirds) => {
 
   // add pipe action
   action('pipe', (pipe) => {
-    pipe.move(-PIPE_SPEED, 0)
+    pipe.move(-c.PIPE_SPEED, 0)
 
     if(pipe.passed) {
       // if bird position passed the pipe position + width , set the score
-      for (let i = 0; i < NUM_OF_BIRDS; i++) {
+      for (let i = 0; i < numberOfBirds; i++) {
         if(birds[i].dead === false) {
           if (pipe.pos.x + pipe.width <= birds[i].pos.x && pipe.passed[i] === false) {
             scores[i].value++;
