@@ -9,7 +9,7 @@ kaboom({
 });
 
 // load sprite
-loadRoot("https://raw.githubusercontent.com/xshrxf11/flappy-bird/master/src/assets/");
+loadRoot(c.ASSET_URL);
 loadSprite("bird-blue", "images/bird-blue.png");
 loadSprite("bird-yellow", "images/bird-yellow.png");
 loadSprite("bird-red", "images/bird-red.png");
@@ -142,8 +142,7 @@ scene("game", (numberOfBirds) => {
       else {
         birds[i].angle = c.JUMP_ANGLE
       }
-
-      // console.log(`birds ${i} position`, birds)
+      
     });
 
     // if bird collides with pipe, restart the game
