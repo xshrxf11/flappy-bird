@@ -1,5 +1,6 @@
 import kaboom from 'kaboom';
 import * as c from './helpers/constants'
+import { version } from '../package.json'
 
 kaboom({
 	global: true,
@@ -61,12 +62,20 @@ scene("menu", () => {
       go("game", (i+1))
     })
 
+    // add players jump keys text
     add([
       text(`P${(i + 1)} press <${c.JUMP_KEYS[i]}> to jump`),
-      pos(width() / 2, (height() - 60 ) + (i * 15)),
+      pos(width() / 2, (height() - 75 ) + (i * 15)),
       origin("center"),
     ])
   }
+
+  // add version text
+  add([
+    text(`v${version}`),
+    pos(width() / 2, height() - 15),
+    origin("center"),
+  ])
   
 })
 
@@ -142,7 +151,7 @@ scene("game", (numberOfBirds) => {
       else {
         birds[i].angle = c.JUMP_ANGLE
       }
-      
+
     });
 
     // if bird collides with pipe, restart the game
