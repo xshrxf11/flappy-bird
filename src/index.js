@@ -1,12 +1,12 @@
 import kaboom from 'kaboom';
 import * as c from './helpers/constants'
-import { version } from '../package.json'
+import p from '../package.json'
 
 kaboom({
 	global: true,
   fullscreen: true,
 	scale: 2, // scale up the canvas
-  debug: true
+  debug: c.DEBUG_MODE
 });
 
 // load sprite
@@ -72,7 +72,7 @@ scene("menu", () => {
 
   // add version text
   add([
-    text(`v${version}`),
+    text(`v${p.version}`),
     pos(width() / 2, height() - 15),
     origin("center"),
   ])

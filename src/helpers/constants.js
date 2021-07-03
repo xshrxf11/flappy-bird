@@ -1,4 +1,5 @@
-export const ASSET_URL = process.env.NODE_ENV !== 'production' ? process.env.ASSET_DEV_URL : process.env.ASSET_PROD_URL
+export const ASSET_URL = process.env.ASSET_URL
+export const DEBUG_MODE = process.env.DEBUG
 export const NUM_OF_BIRDS = 3
 export const JUMP_FORCE = 320;
 export const FALL_ANGLE = 50;

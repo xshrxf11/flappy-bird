@@ -1,13 +1,11 @@
 {
   "name": "flappy-bird",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A bird that cant really flap its wing",
   "main": "src/index.js",
   "scripts": {
-    "dev": "webpack --mode development",
-    "start": "webpack serve",
-    "build": "webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack serve --env mode=development",
+    "build": "webpack --env mode=production"
   },
   "author": "Ashraf",
   "license": "ISC",
