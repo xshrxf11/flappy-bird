@@ -11,9 +11,18 @@ kaboom({
 
 // load sprite
 loadRoot(c.ASSET_URL);
-loadSprite("bird-blue", "images/bird-blue.png");
-loadSprite("bird-yellow", "images/bird-yellow.png");
-loadSprite("bird-red", "images/bird-red.png");
+loadSprite("bird-blue-upflap", "images/bird-blue-upflap.png");
+loadSprite("bird-blue-midflap", "images/bird-blue-midflap.png");
+loadSprite("bird-blue-downflap", "images/bird-blue-downflap.png");
+
+loadSprite("bird-yellow-upflap", "images/bird-yellow-upflap.png");
+loadSprite("bird-yellow-midflap", "images/bird-yellow-midflap.png");
+loadSprite("bird-yellow-downflap", "images/bird-yellow-downflap.png");
+
+loadSprite("bird-red-upflap", "images/bird-red-upflap.png");
+loadSprite("bird-red-midflap", "images/bird-red-midflap.png");
+loadSprite("bird-red-downflap", "images/bird-red-downflap.png");
+
 loadSprite("bg", "images/bg.png");
 loadSprite("pipe", "images/pipe.png");
 
@@ -33,7 +42,7 @@ scene("menu", () => {
   ]);
 
   add([
-    sprite("bird-blue"),
+    sprite("bird-blue-midflap"),
     pos((width() / 2) - 200, 20),
     origin("topleft"),
   ]);
@@ -101,7 +110,7 @@ scene("game", (numberOfBirds) => {
 
     // add birds
     birds.push(add([
-      sprite(`bird-${c.COLORS[i]}`), // load sprite
+      sprite(`bird-${c.COLORS[i]}-midflap`), // load sprite
       pos(100, 100 + (i * 20)), // position sprite
       body(), // gravity sprite
       scale(0.5),
@@ -146,10 +155,10 @@ scene("game", (numberOfBirds) => {
 
       // check if bird is falling
       if(birds[i].falling()) {
-        birds[i].angle = c.FALL_ANGLE
+        birds[i].changeSprite(`bird-${c.COLORS[i]}-upflap`);
       }
       else {
-        birds[i].angle = c.JUMP_ANGLE
+        birds[i].changeSprite(`bird-${c.COLORS[i]}-downflap`);
       }
 
     });
